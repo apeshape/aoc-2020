@@ -19,12 +19,15 @@ for line in data:
 
   bagtypes[bagtype] = rules
 
-result = []
 def bag_contains(bt, total):
+  if len(bt) == 0:
+    return total
+
   for rule in bt:
     for res in range(0, rule["amount"]):
-      result.append('f')
-      bag_contains(bagtypes[rule['bagtype']], total + 1)
+      total = bag_contains(bagtypes[rule['bagtype']], total + 1)
+  
+  return total
 
-bag_contains(bagtypes['shiny gold'], 0)
-print(len(result))
+total = bag_contains(bagtypes['shiny gold'], 0)
+print(total)
