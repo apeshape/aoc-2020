@@ -1,7 +1,7 @@
 import re
 data = open("data", "r").read().splitlines()
 
-def get_rule(rulestr):
+def rule_to_dict(rulestr):
   if(rulestr != "no other bags."):
     bt = re.search(r"(\w*. \w*.)", rulestr[1:])
     return { bt.group(0).strip(): int(rulestr[:1]) }
@@ -15,8 +15,8 @@ def bag_contains(bt, total):
 
 bagtypes = {}
 for line in data:
-  bagtype, contents = (lambda x = line.split(" contain "): [x[0].replace(" bags", ""), x[1].split(", ")])()
-  rules = [get_rule(rulestr) for rulestr in contents if get_rule(rulestr)]
+  bagtype, contents = (lambda x = line.split(" bags contain "): [x[0], x[1].split(", ")])()
+  rules = [rule_to_dict(rulestr) for rulestr in contents if rule_to_dict(rulestr)]
   bagtypes[bagtype] = rules
 
 print(bag_contains(bagtypes["shiny gold"], 0))
