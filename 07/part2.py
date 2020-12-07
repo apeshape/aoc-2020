@@ -1,5 +1,5 @@
 import re
-data = open("data", "r").read().splitlines()
+data = open("testdata", "r").read().splitlines()
 
 bagtypes = {}
 def get_rule(rulestr):
@@ -15,6 +15,9 @@ for line in data:
 def bag_contains(bt, total):
   for rule in bt:
     bagtype = list(rule.keys())[0]
+
+    newtotal = [bag_contains(bagtypes[bagtype], total + 1) for rng in range(0, rule[bagtype])]
+    print('newtotal', newtotal)
     for res in range(0, rule[bagtype]):
       total = bag_contains(bagtypes[bagtype], total + 1)
   
