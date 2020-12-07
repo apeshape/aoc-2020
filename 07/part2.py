@@ -3,13 +3,13 @@ data = open("data", "r").read().splitlines()
 
 bagtypes = {}
 for line in data:
-  bagtype, contains = line.split(' contain ')
-  bagtype = bagtype.replace(' bags', '')
+  bagtype, contains = line.split(" contain ")
+  bagtype = bagtype.replace(" bags", "")
 
   rules = []
-  contents = contains.split(', ')
+  contents = contains.split(", ")
   for possible_contents in contents:
-    if possible_contents != 'no other bags.':
+    if possible_contents != "no other bags.":
       bt = re.search(r"(\w*. \w*.)", possible_contents[1:])
       rule = {
         "amount": int(possible_contents[:1]),
@@ -22,9 +22,9 @@ for line in data:
 def bag_contains(bt, total):
   for rule in bt:
     for res in range(0, rule["amount"]):
-      total = bag_contains(bagtypes[rule['bagtype']], total + 1)
+      total = bag_contains(bagtypes[rule["bagtype"]], total + 1)
   
   return total
 
-total = bag_contains(bagtypes['shiny gold'], 0)
+total = bag_contains(bagtypes["shiny gold"], 0)
 print(total)
