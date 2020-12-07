@@ -2,7 +2,7 @@ import re
 data = open("data", "r").read().splitlines()
 
 bags = []
-def check_bagtype(bagtype, lvl):
+def check_bagtype(bagtype):
   for line in data:
     bt, contains = line.split('contain')
 
@@ -13,8 +13,7 @@ def check_bagtype(bagtype, lvl):
       if container not in bags:
         bags.append(container)
 
-      check_bagtype(container, lvl + 1)
+      check_bagtype(container)
 
-check_bagtype('shiny gold', 1)
-print(bags)
+check_bagtype('shiny gold')
 print(len(bags))

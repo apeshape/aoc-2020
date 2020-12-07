@@ -4,12 +4,11 @@ data = open("data", "r").read().splitlines()
 bagtypes = {}
 
 def get_rule(rulestr):
-  if rulestr != "no other bags.":
-    bt = re.search(r"(\w*. \w*.)", rulestr[1:])
-    return {
-      "amount": int(rulestr[:1]),
-      "bagtype": bt.group(0).strip()
-    }
+  bt = re.search(r"(\w*. \w*.)", rulestr[1:])
+  return {
+    "amount": int(rulestr[:1]),
+    "bagtype": bt.group(0).strip()
+  }
 
 
 for line in data:
@@ -17,18 +16,10 @@ for line in data:
   bagtype = bagtype.replace(" bags", "")
 
   contents = contains.split(", ")
-  rules = [get_rule(rulestr) for rulestr in contents]
-
-  print(rules)
-
-  # for possible_contents in contents:
-  #   if possible_contents != "no other bags.":
-  #     bt = re.search(r"(\w*. \w*.)", possible_contents[1:])
-  #     rule = {
-  #       "amount": int(possible_contents[:1]),
-  #       "bagtype": bt.group(0).strip()
-  #     }
-  #     rules.append(rule)
+  if(contents[0] == "no other bags."):
+    rules = []
+  else:
+    rules = [get_rule(rulestr) for rulestr in contents]
 
   bagtypes[bagtype] = rules
 
