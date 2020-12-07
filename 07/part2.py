@@ -20,9 +20,6 @@ for line in data:
   bagtypes[bagtype] = rules
 
 def bag_contains(bt, total):
-  if len(bt) == 0:
-    return total
-
   for rule in bt:
     for res in range(0, rule["amount"]):
       total = bag_contains(bagtypes[rule['bagtype']], total + 1)
