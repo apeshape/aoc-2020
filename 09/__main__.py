@@ -1,53 +1,28 @@
-from time import sleep
-data = open("data", "r").read().splitlines()
+data = list(map(int, open("data", "r").read().splitlines()))
 
-def get_checksum_and_data(start, datalist):
-  datalist = list(map(int, datalist))
-  preamble = datalist[:start]
-  rest = datalist[start:]
-  checksums = []
-  for chknum in preamble:
-    for chknum2 in preamble:
-      if chknum != chknum2:
-        checksums.append(chknum + chknum2)
-  return [checksums, rest]
+def get_checksums(preamble, result):
+  if(len(preamble) == 0): return result
+  result.extend([num + preamble[0] for num in preamble[1:]])
+  return get_checksums(preamble[1:], result)
 
-def get_corrupt_number(startIdx):
-  all_numbers = data.copy()
-  i = 0
-  while i < len(data):
-    checksums, rest = get_checksum_and_data(startIdx, all_numbers)
-    all_numbers = all_numbers[1:]
-
-    testnum = rest[0]
-    if testnum not in checksums:
-      return testnum
-
-    i += 1
-
+def get_corrupt_number(preamble_size):
+  for i, _ in enumerate(data):
+    if data[i + preamble_size] not in get_checksums(data[i:i+preamble_size], []):
+      return data[i + preamble_size]
 
 def find_corrupt_set(corrupt):
-  all_numbers = list(map(int, data))
-  possible_numbers = [number for number in all_numbers if int(number) <= corrupt]
-
-  startIdx = 0
-  while startIdx < len(possible_numbers):
+  for i, _ in enumerate(data):
     continousSet = []
-    for num in all_numbers[startIdx:]:
+    for num in data[i:]:
       continousSet.append(num)
       set_sum = sum(continousSet)
       if set_sum == corrupt:
         return continousSet
       if set_sum > corrupt:
         break
-    startIdx += 1
-
-  return []
 
 corrupt = get_corrupt_number(25)
 corrupt_set = find_corrupt_set(corrupt)
 
-part1 = corrupt
-part2 = min(corrupt_set) + max(corrupt_set)
-
-print('part1', part1, '\npart2', part2)
+print('part1', corrupt)
+print('part2', min(corrupt_set) + max(corrupt_set))
