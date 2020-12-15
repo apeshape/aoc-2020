@@ -5,45 +5,37 @@ input_list = data.split(',')
 
 numbers = [int(num) for num in input_list]
 
-print('testing for ', numbers)
 spoken = {}
 for idx, num in enumerate(numbers):
-  spoken[num] = [idx]
+  spoken[num] = [idx + 1]
 
 turns = len(spoken.keys())
-all_spoken = numbers.copy()
-while turns < 30000000:
-  last_spoken = all_spoken[-1]
-  current = numbers[turns % len(numbers)]
-
-  # print('{:2}:'.format(turns), 'last spoken', last_spoken)
-
+last_spoken = numbers[-1]
+while turns < 2020:
   if last_spoken in spoken.keys():
-    if len(spoken[last_spoken]) > 0:
-      #number has been said before, at least once
-      if len(spoken[last_spoken]) > 1:
-        current_tail = spoken[last_spoken][-2:]
-        diff = current_tail[1] - current_tail[0]
-        
-        # print('said before, twice', spoken[last_spoken][:2], diff)
-        all_spoken.append(diff)
-        if diff in spoken.keys():
-          spoken[diff].append(turns)
-        else:
-          spoken[diff] = [turns]
-      else:
-        if 0 in spoken.keys():
-          spoken[0].append(turns)
-          all_spoken.append(0)
-        else:
-          spoken[0] = [turns]
-          all_spoken.append(0)
-
+    spoken[last_spoken].append(turns)
+    diff = spoken[last_spoken][-1] - spoken[last_spoken][-2]
+    last_spoken = diff
   else:
-    #first time number was said
-    all_spoken.append(current)
-    spoken[current] = [turns]
+    spoken[last_spoken] = [turns]
+    last_spoken = 0
 
   turns += 1
 
-print('DONE', all_spoken[-1])
+print('DONE', last_spoken)
+
+## alt. solution:
+#
+# def indices(arr, search):
+#   return [idx for idx, el in enumerate(arr) if el == search]
+
+# turns = len(numbers)
+# while turns < 2020:
+#   last_spoken = numbers[-1]
+#   idxs = indices(numbers, last_spoken)
+#   if len(idxs) > 1:
+#     numbers.append(idxs[-1] - idxs[-2])
+#   else:
+#     numbers.append(0)
+#   turns += 1
+# print(numbers[-1])
