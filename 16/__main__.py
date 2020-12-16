@@ -1,5 +1,5 @@
 from functools import reduce
-[rules_input, my_ticket_input, other_tickets_input] = open("./16/data", "r").read().split('\n\n')
+[rules_input, my_ticket_input, other_tickets_input] = open("data", "r").read().split('\n\n')
 
 rules = {}
 for ruleLine in rules_input.split('\n'):
