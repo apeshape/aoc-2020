@@ -15,7 +15,7 @@ def joltComposer(chargers, node, mem = {}):
     diff = testNum - current
     if diff <= 3:
       node['children'][testNum] = joltComposer(rest[idx:], {"children": {}})
-    if diff > 3:
+    else:
       break
   mem[current] = node
   return node
@@ -39,9 +39,7 @@ tree = {
   }
 }
 
-print(data, len(data))
-
 joltComposer(data, tree[0])
-
-print('composed!')
 c = crawlTree(tree)
+
+print(c)
