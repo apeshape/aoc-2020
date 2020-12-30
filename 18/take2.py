@@ -1,10 +1,9 @@
-import re
 from operator import add, sub, mul
 all_lines = open("data", "r").read().splitlines()
 
 operations = {
-  '*': lambda x, y: mul(x, y),
-  '+': lambda x, y: add(x, y),
+  '*': mul,
+  '+': add,
 }
 
 def getSubExpression(line):
@@ -37,7 +36,7 @@ def parseLine(startline):
   idx = 0
   while idx < len(lineList):
     char = lineList[idx]
-    if re.match(r"(\d+)", char):
+    if char.isdigit():
       stack.append(char)
     if char == '+' or char == '*':
       stack.append(char)
@@ -50,7 +49,7 @@ def parseLine(startline):
       parsed = parseLine(subexpr)
       stack.append(parsed)
 
-    if len(stack) >= 3 and shouldEvaluate and re.match(r"(\d+)", stack[-1]):
+    if len(stack) >= 3 and shouldEvaluate and stack[1].isdigit():
       f = stack[-3:]
       evaluated = evaluateFrame(f)
       stack = stack[:-3]
